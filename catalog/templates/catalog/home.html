@@ -11,8 +11,8 @@
 <div class="container">
     <div class="row text-center">
         {% for product in latest_products %}
-            <div class="col-md-4 mb-4">
-                <div class="card box-shadow">
+            <div class="col-3">
+                <div class="card mb-4 box-shadow">
                     {% if product.image %}
                         <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                     {% endif %}
