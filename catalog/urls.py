@@ -12,3 +12,5 @@ urlpatterns = [
     path("thank-you/", thank_you, name="thank_you"),
     path("product/<int:pk>/", product_detail, name="product_detail"),
 
+]
+
