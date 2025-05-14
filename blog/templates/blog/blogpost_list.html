@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<h1 class="text-center my-4">Блог</h1>
+<div class="container">
+    {% for post in blogposts %}
+        {% if post.is_published %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3><a href="{% url 'blog:blog_detail' post.pk %}">{{ post.title }}</a></h3>
+                    <p>{{ post.content|truncatechars:150 }}</p>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div class="text-center mt-4">
+        <a href="{% url 'blog:blog_create' %}" class="btn btn-success">Создать статью</a>
+    </div>
+</div>
+{% endblock %}
+
