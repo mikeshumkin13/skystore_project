@@ -78,6 +78,18 @@ python manage.py runserver
 4. **Форма ProductForm:**
    - Форма для добавления новых продуктов реализована и интегрирована в контроллер `add_product`.
 
+## Домашнее задание 25 — Переход на CBV и реализация блога
+
+### Что сделано:
+- Переведены представления `catalog` с FBV на CBV (`HomePageView`, `ProductDetailView`, `ContactsView`, `ThankYouView`);
+- Создано новое приложение `blog`;
+- Реализована модель `BlogPost`;
+- Созданы CBV: `BlogPostListView`, `BlogPostDetailView`, `BlogPostCreateView`, `BlogPostUpdateView`, `BlogPostDeleteView`;
+- Добавлены шаблоны для всех действий;
+- Реализовано отображение, создание, редактирование и удаление блоговых записей;
+- Добавлена кнопка **"Блог"** в навигацию на всех страницах.
+
+
 
 📝 Задание выполнено в рамках курса SkyPro  
 Автор: [@mikeshumkin13](https://github.com/mikeshumkin13)

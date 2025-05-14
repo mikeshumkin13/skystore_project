@@ -11,8 +11,8 @@ app_name = "blog"
 
 urlpatterns = [
     path("", BlogPostListView.as_view(), name="post_list"),
-    path("<int:pk>/", BlogPostDetailView.as_view(), name="post_detail"),
-    path("create/", BlogPostCreateView.as_view(), name="post_create"),
-    path("<int:pk>/update/", BlogPostUpdateView.as_view(), name="post_update"),
-    path("<int:pk>/delete/", BlogPostDeleteView.as_view(), name="post_delete"),
+    path("<int:pk>/", BlogPostDetailView.as_view(), name="blog_detail"),
+    path("create/", BlogPostCreateView.as_view(), name="blog_create"),
+    path("<int:pk>/update/", BlogPostUpdateView.as_view(), name="blog_update"),
+    path("<int:pk>/delete/", BlogPostDeleteView.as_view(), name="blog_delete"),
 ]
