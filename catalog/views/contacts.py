@@ -1,20 +1,26 @@
-from django.shortcuts import render, redirect
+from django.views.generic import TemplateView, View
+from django.shortcuts import redirect
+from django.http import HttpRequest
 
 
-def contacts(request):
-    """Контроллер для страницы контактов"""
-    if request.method == "POST":
+class ContactsView(View):
+    template_name = "catalog/contacts.html"
+
+    def get(self, request: HttpRequest):
+        return self.render()
+
+    def post(self, request: HttpRequest):
         name = request.POST.get("name")
         phone = request.POST.get("phone")
         message = request.POST.get("message")
-
         print(f"Новое сообщение:\nИмя: {name}\nТелефон: {phone}\nСообщение: {message}")
         return redirect("catalog:thank_you")
 
-    return render(request, "catalog/contacts.html")
+    def render(self):
+        from django.shortcuts import render
+        return render(self.request, self.template_name)
 
 
-def thank_you(request):
-    """Страница благодарности"""
-    return render(request, "catalog/thank_you.html")
+class ThankYouView(TemplateView):
+    template_name = "catalog/thank_you.html"
 
