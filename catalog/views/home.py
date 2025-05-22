@@ -15,4 +15,3 @@ class AddProductView(CreateView):
     form_class = ProductForm
     template_name = "catalog/add_product.html"
     success_url = reverse_lazy("catalog:home")
-
