@@ -18,9 +18,9 @@ class ContactsView(View):
 
     def render(self):
         from django.shortcuts import render
+
         return render(self.request, self.template_name)
 
 
 class ThankYouView(TemplateView):
     template_name = "catalog/thank_you.html"
-

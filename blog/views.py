@@ -1,6 +1,12 @@
 from .forms import BlogPostForm
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
 from .models import BlogPost
 
 
@@ -13,7 +19,6 @@ class BlogPostListView(ListView):
         return BlogPost.objects.filter(is_published=True).order_by("-created_at")
 
 
-
 class BlogPostDetailView(DetailView):
     model = BlogPost
     template_name = "blog/blogpost_detail.html"
@@ -24,7 +29,6 @@ class BlogPostDetailView(DetailView):
         post.views_count += 1
         post.save(update_fields=["views_count"])
         return post
-
 
 
 class BlogPostCreateView(CreateView):
@@ -43,10 +47,7 @@ class BlogPostUpdateView(UpdateView):
         return reverse_lazy("blog:post_detail", kwargs={"pk": self.object.pk})
 
 
-
 class BlogPostDeleteView(DeleteView):
     model = BlogPost
     template_name = "blog/blogpost_confirm_delete.html"
     success_url = reverse_lazy("blog:post_list")
-
-

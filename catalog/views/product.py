@@ -10,4 +10,3 @@ from ..models import Product
 #         'product': product
 #     }
 #     return render(request, 'catalog/product_detail.html', context)
-

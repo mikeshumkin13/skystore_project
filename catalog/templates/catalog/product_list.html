@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Список продуктов</h1>
+  <a href="{% url 'catalog:product_create' %}" class="btn btn-success">Добавить продукт</a>
+  <ul>
+    {% for product in products %}
+      <li>
+        <a href="{% url 'catalog:product_detail' product.pk %}">
+          {{ product.name }} — {{ product.price }} ₽
+        </a>
+        | <a href="{% url 'catalog:product_update' product.pk %}">Редактировать</a>
+        | <a href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
+      </li>
+    {% empty %}
+      <li>Продуктов пока нет.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+
