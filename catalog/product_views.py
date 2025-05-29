@@ -10,6 +10,8 @@ from django.views.generic import (
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Product
 from .forms import ProductForm
+from django.core.exceptions import PermissionDenied
+
 
 
 class ProductListView(ListView):
@@ -30,6 +32,10 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     template_name = "catalog/product_form.html"
     success_url = reverse_lazy("catalog:product_list")
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
@@ -37,8 +43,23 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "catalog/product_form.html"
     success_url = reverse_lazy("catalog:product_list")
 
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.owner != request.user:
+            raise PermissionDenied("Вы не являетесь владельцем этого продукта.")
+        return super().dispatch(request, *args, **kwargs)
+
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = "catalog/product_confirm_delete.html"
     success_url = reverse_lazy("catalog:product_list")
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        # Владелец или пользователь с правом can_unpublish_product
+        if obj.owner != request.user and not request.user.has_perm("catalog.can_unpublish_product"):
+            raise PermissionDenied("Удалять может только владелец или модератор.")
+        return super().dispatch(request, *args, **kwargs)
+
+

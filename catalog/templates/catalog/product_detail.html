@@ -5,10 +5,13 @@
   <p>{{ product.description }}</p>
   <p><strong>Цена:</strong> {{ product.price }} ₽</p>
   <p><strong>Активен:</strong> {{ product.is_active|yesno:"Да,Нет" }}</p>
-  <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-primary">Редактировать</a>
-  <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">Удалить</a>
+
+  {% if request.user == product.owner or request.user.has_perm("catalog.can_unpublish_product") %}
+    <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-primary">Редактировать</a>
+    <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">Удалить</a>
+  {% endif %}
+
   <br><br>
   <a href="{% url 'catalog:product_list' %}">← Назад к списку</a>
 {% endblock %}
-
 
