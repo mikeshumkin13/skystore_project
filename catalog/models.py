@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class Category(models.Model):
@@ -24,9 +27,26 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
 
+    # 🔽 добавляем публикацию
+    is_published = models.BooleanField(default=False, verbose_name="Опубликован")
+
+    # 🔽 добавляем владельца
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='products',
+        verbose_name="Владелец",
+        null=True,  # пока временно null=True, чтобы не упали старые записи
+        blank=True
+    )
+
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
+        permissions = [
+            ("can_unpublish_product", "Может отменить публикацию товара"),
+        ]
 
     def __str__(self):
         return self.name
+
