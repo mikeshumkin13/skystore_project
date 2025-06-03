@@ -12,6 +12,13 @@ from .models import Product
 from .forms import ProductForm
 from django.core.exceptions import PermissionDenied
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
+from django.views import View
+from django.shortcuts import render
+from catalog.services.product_service import get_products_by_category
+
 
 
 class ProductListView(ListView):
@@ -19,11 +26,12 @@ class ProductListView(ListView):
     template_name = "catalog/product_list.html"
     context_object_name = "products"
 
-
+@method_decorator(cache_page(60 * 5), name="dispatch")
 class ProductDetailView(DetailView):
     model = Product
     template_name = "catalog/product_detail.html"
     context_object_name = "product"
+
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -61,5 +69,18 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         if obj.owner != request.user and not request.user.has_perm("catalog.can_unpublish_product"):
             raise PermissionDenied("Удалять может только владелец или модератор.")
         return super().dispatch(request, *args, **kwargs)
+
+
+class ProductsByCategoryView(View):
+    template_name = "catalog/category_products.html"
+
+    def get(self, request, slug):
+        category, products = get_products_by_category(slug)
+        context = {
+            "category": category,
+            "products": products,
+        }
+        return render(request, self.template_name, context)
+
 
 
