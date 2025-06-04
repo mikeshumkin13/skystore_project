@@ -71,16 +71,6 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class ProductsByCategoryView(View):
-    template_name = "catalog/category_products.html"
-
-    def get(self, request, slug):
-        category, products = get_products_by_category(slug)
-        context = {
-            "category": category,
-            "products": products,
-        }
-        return render(request, self.template_name, context)
 
 
 

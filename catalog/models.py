@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils.text import slugify
 
 User = get_user_model()
 
@@ -8,9 +9,16 @@ class Category(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название")
     description = models.TextField(blank=True, verbose_name="Описание")
 
+    slug = models.SlugField(max_length=255, unique=True, blank=True, verbose_name="Слаг")
+
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -36,7 +44,7 @@ class Product(models.Model):
         on_delete=models.CASCADE,
         related_name='products',
         verbose_name="Владелец",
-        null=True,  # пока временно null=True, чтобы не упали старые записи
+        null=True,
         blank=True
     )
 
@@ -49,4 +57,3 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
