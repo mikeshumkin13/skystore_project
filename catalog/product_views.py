@@ -20,7 +20,7 @@ from django.shortcuts import render
 from catalog.services.product_service import get_products_by_category
 
 
-
+@method_decorator(cache_page(60 * 2), name="dispatch")
 class ProductListView(ListView):
     model = Product
     template_name = "catalog/product_list.html"

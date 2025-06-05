@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
+from unidecode import unidecode
+
 
 User = get_user_model()
 
@@ -16,8 +18,8 @@ class Category(models.Model):
         verbose_name_plural = "Категории"
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
+        if not self.slug or self.slug.strip() == "":
+            self.slug = slugify(unidecode(self.name))
         super().save(*args, **kwargs)
 
     def __str__(self):
